@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/pessoa")
 public class PessoaController {
-
-//      1                       2                   3              4
-//publico/Privado   // tipo de retorno      // nome do metodo // parametros
-    //EndPoint
     @CrossOrigin(origins = "*")
     @GetMapping
+
+    //EndPoint
+//      1                       2                   3              4
+//publico/Privado   // tipo de retorno      // nome do metodo // parametros
     public           ResponseEntity<Object>     get(){
         Pessoa pessoa1 = new Pessoa();
         pessoa1.setNome("pedro");
