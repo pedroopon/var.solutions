@@ -1,12 +1,41 @@
 package com.br.var.solutions;
 
-public class Pessoa {
+public class PessoaRequest {
 
-    String nome;
-    String sobrenome;
-    String endereco;
-    int idade;
-    double peso;
+    public String nome;
+    public String sobrenome;
+    public String endereco;
+    public int idade;
+    public double peso;
+    public double altura;
+    public double salario;
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
+    double saldo;
+
+
+    public double getAltura() {
+        return altura;
+    }
+
+    public void setAltura(double altura) {
+        this.altura = altura;
+    }
+
+    public double getSalario() {
+        return salario;
+    }
+
+    public void setSalario(double salario) {
+        this.salario = salario;
+    }
 
     public String getNome() {
         return nome;
