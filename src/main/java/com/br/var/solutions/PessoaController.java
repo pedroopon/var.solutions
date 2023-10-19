@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 @RestController
@@ -30,7 +31,7 @@ public class PessoaController {
         String imc = null;
         int anoNascimento = 0;
         String impostoRenda = null;
-        double conversao = 0 ;
+        String conversao = null;
 
 
         if (!pessoinha.getNome().isEmpty()) {
@@ -70,33 +71,78 @@ public class PessoaController {
 
     }
 
-    private double ConversaoDolart(double saldo) {
-        return 0;
+    private String ConversaoDolart(double saldo) {
+        return String.valueOf(saldo / 5.11);
+
     }
 
-    private Object montarRespostaFrontEnd(String imc, int anoNascimento, String impostoRenda) {
-        return null;
+    private PessoaResponse montarRespostaFrontEnd(PessoaRequest pessoa, String imc, int anoNascimento, String impostoRenda) {
+        PessoaResponse response = new PessoaResponse();
+
+        response.setNome(pessoa.getNome());
+        response.setSalario(impostoRenda);
+
+        return response;
     }
 
 
+    // Regra : salario x liquota - dedução
     private String CalcularFaixaImporto(double salario) {
-        return null;
+        log.info("iniciando calcuclo de imposto de renda");
+        String novoSalarioCalculado;
+
+        if (salario < 2112.0) {
+            return "isento";
+
+        } else if (salario > 2112.0 && salario <= 2826.65) {
+            double calculoIRRF = ((salario * 0.075) / 100) - 158.40;
+            double novoSalario = salario - calculoIRRF;
+            novoSalarioCalculado = String.valueOf(novoSalario);
+            return novoSalarioCalculado;
+
+        } else if (salario > 2826.66 && salario <= 3751.05) {
+            double calculoIRRF = ((salario * 0.15) / 100) - 370.40;
+            double novoSalario = salario - calculoIRRF;
+            novoSalarioCalculado = String.valueOf(novoSalario);
+            return novoSalarioCalculado;
+
+        } else if (salario > 3751.06 && salario <= 4664.68) {
+            double calculoIRRF = ((salario * 0.225) / 100) - 651.73;
+            double novoSalario = salario - calculoIRRF;
+            novoSalarioCalculado = String.valueOf(novoSalario);
+            return novoSalarioCalculado;
+        } else {
+            double calculoIRRF = ((salario * 0.275) / 100) - 884.96;
+            double novoSalario = salario - calculoIRRF;
+            novoSalarioCalculado = String.valueOf(novoSalario);
+            return novoSalarioCalculado;
+        }
+
+
     }
 
     private int calcularAnoNascimento(int idade) {
-        return 0;
-
+        LocalDate datalocal = LocalDate.now();
+        int anoAtual = datalocal.getYear();
+        return anoAtual - idade;
     }
+
 
     private String calcularimc(double altura, double peso) {
         double imc = peso / (altura * altura);
 
-        if (imc <= 18.5){
+        if (imc < 18.5) {
             return "O IMC calculado é: " + imc + " e você está abaixo do peso.  ";
-        } else if (imc > 18.5 && imc <= 24.9) {
+        } else if (imc >= 18.5 && imc <= 24.9) {
             return "o seu IMC calculado é: " + imc + " e voce está no peso ideal. ";
         } else if (imc > 24.9 && imc <= 29.9) {
             return "o seu IMC calculado é: " + imc + " e voce está acima do peso. ";
+        } else if (imc > 29.9 && imc <= 34.9) {
+            return "o seu IMC calculado é: " + imc + " e voce está obesidade classe 1. ";
+        } else if (imc > 34.9 && imc <= 39.9) {
+            return " o seu IMC calculado é: " + imc + " e voce está obesidade classe 2 .";
+        } else {
+            return "o seu IMC calculado é: " + imc + "e voce está obesidade classe 3";
         }
 
     }
