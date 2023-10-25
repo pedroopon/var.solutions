@@ -28,7 +28,7 @@ public class PessoaController {
 
     @GetMapping("/resumo")
     public ResponseEntity<Object> getPessoa(@RequestBody PessoaRequest pessoinha) {
-        String imc = null;
+        InformacaoIMC imc = new InformacaoIMC();
         int anoNascimento = 0;
         String impostoRenda = null;
         String conversao = null;
@@ -60,7 +60,7 @@ public class PessoaController {
             }
 
             log.info("Montando Objeto de retorno para o Front-end");
-            Object resumo = montarRespostaFrontEnd(imc, anoNascimento, impostoRenda);
+            PessoaResponse resumo = montarRespostaFrontEnd(pessoinha, imc, anoNascimento, impostoRenda, conversao);
 
 
             return ResponseEntity.ok(resumo);
@@ -71,18 +71,33 @@ public class PessoaController {
 
     }
 
-    private String ConversaoDolart(double saldo) {
-        return String.valueOf(saldo / 5.11);
 
-    }
-
-    private PessoaResponse montarRespostaFrontEnd(PessoaRequest pessoa, String imc, int anoNascimento, String impostoRenda) {
+    private PessoaResponse montarRespostaFrontEnd(PessoaRequest pessoa, InformacaoIMC imc, int anoNascimento, String impostoRenda, String saldoEmDolar) {
         PessoaResponse response = new PessoaResponse();
 
         response.setNome(pessoa.getNome());
         response.setSalario(impostoRenda);
+        response.setAnoNascimento(anoNascimento);
+        response.setSaldoEmDolar(saldoEmDolar);
+        response.setImc(imc.getImc());
+        response.setClassificaçãoIMC(imc.getClassificação());
+        response.setAnoNascimento(anoNascimento);
+        response.setIdade(pessoa.idade);
+        response.setSobrenome(pessoa.getSobrenome());
+        response.setPeso(pessoa.peso);
+        response.setAltura(pessoa.altura);
+        response.setEndereco(pessoa.getEndereco());
+        response.setSaldo(pessoa.saldo);
+
+
 
         return response;
+    }
+
+
+    private String ConversaoDolart(double saldo) {
+        return String.valueOf(saldo / 5.11);
+
     }
 
 
@@ -128,21 +143,35 @@ public class PessoaController {
     }
 
 
-    private String calcularimc(double altura, double peso) {
+    private InformacaoIMC calcularimc(double altura, double peso) {
         double imc = peso / (altura * altura);
 
+        InformacaoIMC imccalculado = new InformacaoIMC();
+
         if (imc < 18.5) {
-            return "O IMC calculado é: " + imc + " e você está abaixo do peso.  ";
+            imccalculado.setImc(String.valueOf(imc));
+            imccalculado.setClassificação(" e você está abaixo do peso.");
+            return imccalculado;
         } else if (imc >= 18.5 && imc <= 24.9) {
-            return "o seu IMC calculado é: " + imc + " e voce está no peso ideal. ";
+            imccalculado.setImc(String.valueOf(imc));
+            imccalculado.setClassificação("e voce está no peso ideal");
+            return imccalculado;
         } else if (imc > 24.9 && imc <= 29.9) {
-            return "o seu IMC calculado é: " + imc + " e voce está acima do peso. ";
+            imccalculado.setImc(String.valueOf(imc));
+            imccalculado.setClassificação("e voce está acima do peso.");
+            return imccalculado;
         } else if (imc > 29.9 && imc <= 34.9) {
-            return "o seu IMC calculado é: " + imc + " e voce está obesidade classe 1. ";
+            imccalculado.setImc(String.valueOf(imc));
+            imccalculado.setClassificação(" e voce está obesidade classe 1. ");
+            return imccalculado;
         } else if (imc > 34.9 && imc <= 39.9) {
-            return " o seu IMC calculado é: " + imc + " e voce está obesidade classe 2 .";
+            imccalculado.setImc(String.valueOf(imc));
+            imccalculado.setClassificação(" e voce está obesidade classe 2 .");
+            return imccalculado;
         } else {
-            return "o seu IMC calculado é: " + imc + "e voce está obesidade classe 3";
+            imccalculado.setImc(String.valueOf(imc));
+            imccalculado.setClassificação("e voce está obesidade classe 3");
+            return imccalculado;
         }
 
     }

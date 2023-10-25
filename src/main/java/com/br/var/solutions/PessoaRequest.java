@@ -9,6 +9,7 @@ public class PessoaRequest {
     public double peso;
     public double altura;
     public double salario;
+    double saldo;
 
     public double getSaldo() {
         return saldo;
@@ -17,8 +18,6 @@ public class PessoaRequest {
     public void setSaldo(double saldo) {
         this.saldo = saldo;
     }
-
-    double saldo;
 
 
     public double getAltura() {

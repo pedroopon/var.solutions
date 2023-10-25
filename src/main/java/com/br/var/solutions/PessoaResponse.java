@@ -2,13 +2,48 @@ package com.br.var.solutions;
 
 public class PessoaResponse {
     public String nome;
-    public String sobrenome;
     public int idade;
     public String imc;
     public String classificaçãoIMC;
     public String irrf;
     public String aliquota;
+
+
+    public String salario;
+
+    public int anoNascimento;
+
+
+    public String sobrenome;
+    public String endereco;
+    public double peso;
+    public double altura;
     public String saldoEmDolar;
+    public double saldo;
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
+    public String getSalario() {
+        return salario;
+    }
+
+    public void setSalario(String salario) {
+        this.salario = salario;
+    }
+
+    public int getAnoNascimento() {
+        return anoNascimento;
+    }
+
+    public void setAnoNascimento(int anoNascimento) {
+        this.anoNascimento = anoNascimento;
+    }
 
     public String getImc() {
         return imc;
@@ -50,11 +85,6 @@ public class PessoaResponse {
         this.saldoEmDolar = saldoEmDolar;
     }
 
-    public String endereco;
-
-    public double peso;
-    public double altura;
-    public double salario;
 
     public String getNome() {
         return nome;
@@ -104,11 +134,5 @@ public class PessoaResponse {
         this.altura = altura;
     }
 
-    public double getSalario() {
-        return salario;
-    }
 
-    public void setSalario(double salario) {
-        this.salario = salario;
-    }
 }
